@@ -13,10 +13,10 @@ THE_LAST_JEDI = 8
 THE_RISE_OF_SKYWALKER = 9
 
 
-# test_enterpriseIsAStarship
+# it "should assert that the Enterprise is a starship (and fail)"
 ENTERPRISE_IS_A_STARSHIP = 1
 
-# test_chewbaccaIsAWookie
+# it "should assert that Chewbacca is a Wookiee"
 EXPECTED_SPECIES_WOOKIE = 'Wookiee'
 
 #test_verifyStarshipsFields
@@ -56,7 +56,7 @@ describe SWAPI do
   context "When testing the Star Wars API" do
     it "should assert that Chewbacca is a Wookiee" do
       swapi = SWAPI.new()
-      person = "Chewbacca"
+      person = 'Chewbacca'
       person_response = swapi.fetchPerson(person)
 
       species_list = parseSpeciesUrlsFromPerson(parseJson(person_response))
@@ -66,9 +66,57 @@ describe SWAPI do
       expect(species_name).to eq(EXPECTED_SPECIES_WOOKIE)
     end
   end
+
+  context "When testing the Star Wars API" do
+    it "should assert that the /starships endpoint returns the fields:
+                name, model, crew, hyperdrive_rating, pilots, films" do
+      swapi = SWAPI.new()
+      starships_response = swapi.fetchStarships()
+      first_result = parseResultsZero(parseJson(starships_response))
+      actual_fields = parseActualFields(first_result)
+      remaining_fields = EXPECTED_STARSHIP_FIELDS - actual_fields
+      puts remaining_fields
+      expect(remaining_fields.empty?).to eq(true)
+      end
+  end
+
+  context "When testing the Star Wars API" do
+    it "should assert that the /starships count returned is correct by paging through the results" do
+      swapi = SWAPI.new()
+      starships_response = swapi.fetchStarships()
+
+      starships_expected_count = parseCount(parseJson(starships_response))
+      starships_next_page_url = parseNext(parseJson(starships_response))
+
+      starships_all_results = parseResultsAll(parseJson(starships_response))
+      starships_current_count = starships_all_results.length
+
+      while starships_next_page_url.to_s != ''
+        puts "starships next page url: ", starships_next_page_url
+        starships_response_current = swapi.fetchByUrl(starships_next_page_url)
+        starships_next_page_url = parseNext(parseJson(starships_response_current))
+        starships_current_count = parseResultsAll(parseJson(starships_response_current)).length + starships_current_count
+        puts "Current Count: ", starships_current_count
+      end
+      expect(starships_current_count).to eq(starships_expected_count)
+    end
+  end
  end
 
 ## Parse functions
+
+def parseNext(json)
+  next_url = json[NEXT]
+  next_url
+
+end
+
+def parseActualFields(json)
+  actual_fields = json.keys
+  actual_fields
+
+end
+
 
 def parseName(json)
   name = json[NAME]
@@ -112,7 +160,7 @@ end
 ## Helper function
 def extractFilmNumbers(film_urls)
   # Extracts the number from the film URLs which corresponds to the film. Returns an array of all film numbers.
-  film_numbers = Array.new
+  film_numbers = []
   film_urls.each do |film|
     end_of_word = film.length
     end_of_word_minus_two = end_of_word - 2
