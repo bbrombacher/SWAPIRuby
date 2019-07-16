@@ -19,7 +19,8 @@ ENTERPRISE_IS_A_STARSHIP = 1
 # it "should assert that Chewbacca is a Wookiee"
 EXPECTED_SPECIES_WOOKIE = 'Wookiee'
 
-#test_verifyStarshipsFields
+# it "should assert that the /starships endpoint returns the fields:
+#                 name, model, crew, hyperdrive_rating, pilots, films"
 EXPECTED_STARSHIP_FIELDS = ['name', 'model', 'crew', 'hyperdrive_rating', 'pilots', 'films']
 
 
@@ -184,7 +185,11 @@ def isInFilm(film_to_check, films_urls)
 end
 
 def parseJson(response)
-  #TODO:  INCLUDE TRY CATCH STATEMENT!!!!!!!!!
-  json = JSON.parse(response.read_body)
-  json
+  begin
+    json = JSON.parse(response.read_body)
+    json
+    end
+rescue JSON::ParserError
+  $stderr.print 'JSON Parse Failed: ' + $ERROR_INFO
+  raise
 end

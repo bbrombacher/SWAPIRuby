@@ -22,13 +22,19 @@ class SWAPI
   ## Generic API Call
 
   def fetch(url)
-    puts 'URL: ', url
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = true
-    request = Net::HTTP::Get.new(url)
-    response = http.request(request)
-    puts response.read_body
-    response
+    begin
+      puts 'URL: ', url
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true
+      request = Net::HTTP::Get.new(url)
+      response = http.request(request)
+      puts response.read_body
+      response
+      end
+  rescue
+    $stderr.print "Unable to fetch: ", $ERROR_INFO
+    raise
+
   end
 
   def fetchByUrl(user_url)
