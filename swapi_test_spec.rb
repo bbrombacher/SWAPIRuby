@@ -50,7 +50,7 @@ describe SWAPI do
       starship = 'Enterprise'
       response = swapi.fetchStarship(starship)
       count = parseCount(parseJson(response))
-      expect(1).to eq(1) #expect(count).to eq(ENTERPRISE_IS_A_STARSHIP)
+      expect(count).to eq(ENTERPRISE_IS_A_STARSHIP)
     end
   end
 
@@ -131,6 +131,7 @@ def parseSpeciesUrlsFromPerson(json)
   species
 
 end
+
 def parseResultsAll(json)
   #Parses json and returns all items in the results data.
   results = json[RESULTS]
