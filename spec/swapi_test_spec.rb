@@ -1,4 +1,4 @@
-require_relative 'SWAPI'
+require_relative '../SWAPI'
 require 'json'
 
 # it "should assert that Obi-Wan was in the film A New Hope"

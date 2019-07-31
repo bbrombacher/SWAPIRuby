@@ -4,6 +4,6 @@ Install dependencies
 3. Install dependencies with bundler via CL: bundle install
 
 Execute Tests
-1. All Tests: rspec swapi_test_spec.rb
-2. One Test: rspec swapi_test_spec.rb:37    [replace 37 with appropriate line number]
-3. 
+1. All Tests: rspec spec/swapi_test_spec.rb
+2. One Test: rspec spec/swapi_test_spec.rb:37    [replace 37 with appropriate line number]
+3. rake         [This will execute all tests]
