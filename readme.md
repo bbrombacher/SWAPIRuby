@@ -6,4 +6,4 @@ Install dependencies
 Execute Tests
 1. All Tests: rspec spec/swapi_test_spec.rb
 2. One Test: rspec spec/swapi_test_spec.rb:37    [replace 37 with appropriate line number]
-3. rake         [This will execute all tests]
+3. All Tests: rake
